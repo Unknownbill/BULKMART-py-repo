@@ -1,8 +1,9 @@
 // src/pages/Dashboard.tsx
 import React from 'react';
+import { Page } from '../types';
 
 interface DashboardProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: Page) => void;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
@@ -19,7 +20,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
     { icon: 'question-circle', label: 'Get Help', color: 'orange' }
   ];
 
-  const navigationCards = [
+  const navigationCards: { page: Page; icon: string; title: string; description: string; color: string }[] = [
     { page: 'products', icon: 'shopping-basket', title: 'Browse Products', description: 'Discover agricultural products from across Nigeria', color: 'blue' },
     { page: 'groups', icon: 'users', title: 'Market Groups', description: 'Join local agricultural communities and cooperatives', color: 'green' },
     { page: 'group-purchase', icon: 'handshake', title: 'Group Purchase', description: 'Collaborate with others to get better bulk prices', color: 'purple' },
@@ -43,14 +44,14 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           {quickStats.map((stat, index) => (
             <div 
               key={index}
-              className={`bg-white rounded-xl shadow-lg p-6 border-l-4 border-${stat.color}-400 hover:scale-105 transition-transform duration-300`}
+              className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-400 hover:scale-105 transition-transform duration-300"
             >
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-lg font-bold text-green-900">{stat.title}</h3>
                   <p className="text-3xl font-bold text-green-700">{stat.value}</p>
                 </div>
-                <div className={`text-4xl text-${stat.color}-400`}>
+                <div className="text-4xl text-yellow-400">
                   <i className={`fas fa-${stat.icon}`}></i>
                 </div>
               </div>
@@ -74,7 +75,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 key={index}
                 className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-center"
               >
-                <i className={`fas fa-${action.icon} text-2xl text-${action.color}-600 mb-2`}></i>
+                <i className={`fas fa-${action.icon} text-2xl text-green-600 mb-2`}></i>
                 <span className="text-sm font-medium">{action.label}</span>
               </button>
             ))}
@@ -88,7 +89,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             <div 
               key={index}
               onClick={() => onNavigate(card.page)}
-              className={`bg-gradient-to-r from-${card.color}-500 to-${card.color}-600 text-white rounded-xl p-6 shadow-lg cursor-pointer hover:scale-105 transform transition-all duration-300 floating`}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl p-6 shadow-lg cursor-pointer hover:scale-105 transform transition-all duration-300 floating"
               style={{ animationDuration: `${4 + index}s` }}
             >
               <div className="text-4xl mb-4">
@@ -107,7 +108,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             {recentActivities.map((activity, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                 <div className="flex items-center">
-                  <div className={`w-10 h-10 bg-${activity.color}-100 rounded-full flex items-center justify-center text-${activity.color}-600 mr-3`}>
+                  <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 mr-3">
                     <i className={`fas fa-${activity.icon}`}></i>
                   </div>
                   <div>

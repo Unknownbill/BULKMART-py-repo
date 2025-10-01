@@ -1,14 +1,13 @@
 // src/pages/Login.tsx
 import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { User } from '../types';
 
 interface LoginProps {
-  onLogin: (page: string) => void;
+  onLogin: (user: User) => void;
   onShowSuccess: (message: string) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onLogin, onShowSuccess }) => {
-  const { login } = useAuth();
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formData, setFormData] = useState({
     username: '',
@@ -41,14 +40,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSuccess }) => {
     }
     
     // Simulate authentication
-    const user = {
+    const user: User = {
       email: formData.email,
       username: formData.username || formData.email.split('@')[0]
     };
     
-    login(user);
-    onShowSuccess(isLoginMode ? 'Login successful!' : 'Account created successfully!');
-    onLogin('dashboard');
+    onLogin(user);
   };
 
   const toggleAuthMode = () => {

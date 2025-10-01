@@ -162,7 +162,12 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
       </div>
 
       {/* Additional CSS for animations */}
-      <style jsx>{`
+      <style>{`
+  .your-css-styles {
+    color: red;
+  }
+
+    
         @keyframes shrinkWidth {
           from { width: 100%; }
           to { width: 0%; }
@@ -191,7 +196,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
             transform: scale(1);
           }
         }
-      `}</style>
+`}</style>
     </div>
   );
 };

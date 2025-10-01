@@ -4,6 +4,8 @@ export interface User {
   username?: string;
 }
 
+export type Page = 'home' | 'login' | 'dashboard' | 'products' | 'groups' | 'group-purchase' | 'feedback';
+
 export interface Product {
   id: number;
   name: string;
