@@ -32,5 +32,8 @@
     "not ie 11",
     "not ios_saf <= 26",
     "not safari <= 26"
-  ]
+  ],
+  "connector": {
+    "name": "vscode"
+  }
 }

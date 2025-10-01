@@ -1,0 +1,21 @@
+{
+        "console-ninja.toolsToEnableSupportAutomaticallyFor": {
+                "webpack": false,
+                "vite": false,
+                "jest": false,
+                "angular": false,
+                "cypress": false,
+                "next.js": false,
+                "nest.js": false,
+                "http-server": false,
+                "serve": false,
+                "live-server": false,
+                "nuxt": false,
+                "astro": false,
+                "hydrogen": false,
+                "serverless": false,
+                "qwik": false,
+                "remix": false
+        },
+        "console-ninja.showWhatsNew": false
+}

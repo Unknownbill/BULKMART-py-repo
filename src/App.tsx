@@ -11,7 +11,7 @@ import GroupPurchase from './pages/GroupPurchase';
 import Feedback from './pages/Feedback';
 import SuccessModal from './components/SuccessModal';
 import { User, Page } from './types';
-import './styles/globals.css';
+import './styles/global.css';
 
 const App: React.FC = () => {
   const { currentUser, isLoading, login, logout } = useAuth();

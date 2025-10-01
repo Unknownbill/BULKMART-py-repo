@@ -1,8 +1,5 @@
 /* src/styles/globals.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
 
 * {
   margin: 0;
@@ -12,7 +9,7 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #f0fff4;
+  background-color: #289e48;
   scroll-behavior: smooth;
 }
 
