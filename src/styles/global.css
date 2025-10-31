@@ -1,82 +1,28 @@
-/* src/styles/globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: #289e48;
-  scroll-behavior: smooth;
-}
-
-.logo-font {
-  font-family: 'Playfair Display', serif;
-}
-
-/* Add all the custom animations and styles from the original HTML */
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.4; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(37, 186, 37, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(34, 197, 34, 0.6); }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 3s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
-}
-/* src/styles/globals.css */
-/* Add these to your existing CSS */
-
-@keyframes shrinkWidth {
-  from { width: 100%; }
-  to { width: 0%; }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
-}
-
-.animate-scale-in {
-  animation: scaleIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes scaleIn {
-  from { 
-    opacity: 0;
-    transform: scale(0.9);
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-inter), sans-serif;
   }
-  to { 
-    opacity: 1;
-    transform: scale(1);
+
+  body {
+    font-family: var(--font-open-sans), sans-serif;
   }
 }
 
-.modal-backdrop {
-  backdrop-filter: blur(4px);
-}
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors;
+  }
 
+  .btn-secondary {
+    @apply border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-sm border p-6;
+  }
+}

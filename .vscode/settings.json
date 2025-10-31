@@ -1,21 +1,33 @@
 {
-        "console-ninja.toolsToEnableSupportAutomaticallyFor": {
-                "webpack": false,
-                "vite": false,
-                "jest": false,
-                "angular": false,
-                "cypress": false,
-                "next.js": false,
-                "nest.js": false,
-                "http-server": false,
-                "serve": false,
-                "live-server": false,
-                "nuxt": false,
-                "astro": false,
-                "hydrogen": false,
-                "serverless": false,
-                "qwik": false,
-                "remix": false
-        },
-        "console-ninja.showWhatsNew": false
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  // Help the Tailwind VS Code plugin and CSS language features recognize frameworks
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript",
+    "html": "html",
+    "javascript": "javascript",
+    "javascriptreact": "javascript"
+  },
+  "console-ninja.toolsToEnableSupportAutomaticallyFor": {
+    "webpack": false,
+    "vite": false,
+    "jest": false,
+    "angular": false,
+    "cypress": false,
+    "next.js": false,
+    "nest.js": false,
+    "http-server": false,
+    "serve": false,
+    "live-server": false,
+    "nuxt": false,
+    "astro": false,
+    "hydrogen": false,
+    "serverless": false,
+    "qwik": false,
+    "remix": false
+  },
+  "console-ninja.showWhatsNew": false,
+  "CodeGPT.apiKey": "Anthropic"
 }

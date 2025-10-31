@@ -1,128 +1,142 @@
 // src/components/Header.tsx
-import React, { useState } from 'react';
-import { User, Page } from '../types';
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Search, ShoppingCart } from 'lucide-react';
+import Notifications from './Notifications';
+import MobileNavigation from './MobileNavigation';
+import type { User, Page } from '@/types';
 
 interface HeaderProps {
-  currentUser: User;
+  currentUser: User | null;
   onNavigate: (page: Page) => void;
   onLogout: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentUser, onNavigate, onLogout }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export default function Header({ currentUser, onNavigate, onLogout }: HeaderProps) {
+  const pathname = usePathname();
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const handleNavigation = (page: Page) => {
-    onNavigate(page);
-    setIsMobileMenuOpen(false);
-  };
-
-  const userInitial = currentUser.username?.charAt(0).toUpperCase() || currentUser.email.charAt(0).toUpperCase();
-
-  const navigationItems: { page: Page; icon: string; label: string }[] = [
-    { page: 'dashboard', icon: 'tachometer-alt', label: 'Dashboard' },
-    { page: 'products', icon: 'shopping-basket', label: 'Products' },
-    { page: 'groups', icon: 'users', label: 'Market Groups' },
-    { page: 'group-purchase', icon: 'handshake', label: 'Group Purchase' },
-    { page: 'feedback', icon: 'comments', label: 'Feedback' }
+  const navigation = [
+    { name: 'Home', href: '/' },
+    { name: 'Products', href: '/products' },
+    { name: 'Market Groups', href: '/groups' },
+    { name: 'Dashboard', href: '/dashboard' },
   ];
 
+  const isActive = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
+
   return (
-    <header className="gradient-bg text-white shadow-lg sticky top-0 z-40">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
+    <header className="bg-white shadow-sm border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div 
-            className="logo-container cursor-pointer"
-            onClick={() => handleNavigation('dashboard')}
-          >
-            <div className="logo-icon">
-              <i className="fas fa-seedling"></i>
-            </div>
-            <h1 className="text-2xl font-bold logo-font">BULK<span className="text-yellow-400">MART</span></h1>
-          </div>
+          <Link href="/" className="flex items-center">
+            <span className="text-2xl font-bold text-primary">BULKGRO</span>
+          </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6">
-            {navigationItems.map((item) => (
-              <button
-                key={item.page}
-                onClick={() => handleNavigation(item.page)}
-                className="flex items-center space-x-2 hover:text-yellow-300 transition-colors duration-300 capitalize"
+          <nav className="hidden md:flex space-x-8">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href as any}
+                className={`${
+                  isActive(item.href)
+                    ? 'text-primary border-b-2 border-primary'
+                    : 'text-gray-700 hover:text-primary'
+                } px-3 py-2 text-sm font-medium transition-colors`}
               >
-                <i className={`fas fa-${item.icon}`}></i>
-                <span>{item.label}</span>
-              </button>
+                {item.name}
+              </Link>
             ))}
           </nav>
 
-          {/* User Section */}
-          <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-3">
-              <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-green-900 font-bold shadow-md">
-                {userInitial}
-              </div>
-              <span className="text-green-200">
-                Welcome, {currentUser.username || currentUser.email.split('@')[0]}!
-              </span>
+          {/* Search Bar - Hidden on mobile */}
+          <div className="hidden md:flex flex-1 max-w-lg mx-4">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
             </div>
-            
-            <button 
-              onClick={onLogout}
-              className="hidden md:block bg-yellow-400 text-green-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-500 transition-colors duration-300 shadow-md"
-            >
-              Logout
-            </button>
+          </div>
 
-            {/* Mobile Menu Button */}
-            <button 
-              className="md:hidden text-2xl"
-              onClick={toggleMobileMenu}
-              aria-label="Toggle menu"
+          {/* User Actions */}
+          <div className="flex items-center space-x-4">
+            <Notifications />
+            
+            <Link 
+              href="/cart" 
+              className="relative p-2 text-gray-700 hover:text-primary transition-colors"
             >
-              <i className="fas fa-bars"></i>
-            </button>
+              <ShoppingCart className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                2
+              </span>
+            </Link>
+
+            {/* Desktop Auth Links / User Menu */}
+            <div className="hidden md:flex items-center space-x-2">
+              {currentUser ? (
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => onNavigate('dashboard')}
+                    className="text-gray-700 hover:text-primary text-sm font-medium transition-colors"
+                  >
+                    {currentUser.name || currentUser.username || 'Account'}
+                  </button>
+                  <button
+                    onClick={onLogout}
+                    className="text-sm text-red-600 hover:underline"
+                    aria-label="Logout"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <Link 
+                    href="/signin" 
+                    className="text-gray-700 hover:text-primary text-sm font-medium transition-colors"
+                  >
+                    Login
+                  </Link>
+                  <span className="text-gray-300">|</span>
+                  <Link 
+                    href="/signup" 
+                    className="text-gray-700 hover:text-primary text-sm font-medium transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Mobile Navigation */}
+            <MobileNavigation />
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div className={`md:hidden mt-4 pb-4 border-t border-green-700 pt-4 transition-all duration-300 ${
-          isMobileMenuOpen ? 'block' : 'hidden'
-        }`}>
-          <div className="space-y-3">
-            {navigationItems.map((item) => (
-              <button
-                key={item.page}
-                onClick={() => handleNavigation(item.page)}
-                className="w-full text-left flex items-center space-x-3 p-2 rounded-lg hover:text-yellow-300 transition-colors duration-300"
-              >
-                <i className={`fas fa-${item.icon} text-xl`}></i>
-                <span>{item.label}</span>
-              </button>
-            ))}
-            
-            <div className="flex items-center space-x-3 p-2 border-t border-green-700 pt-4">
-              <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-green-900 font-bold shadow-md">
-                {userInitial}
-              </div>
-              <span>Welcome, {currentUser.username || currentUser.email.split('@')[0]}!</span>
-            </div>
-            
-            <button 
-              onClick={onLogout}
-              className="w-full bg-yellow-400 text-green-900 px-4 py-2 rounded-lg font-bold hover:bg-yellow-500 transition-colors duration-300 shadow-md"
-            >
-              Logout
-            </button>
+        {/* Mobile Search Bar */}
+        <div className="md:hidden pb-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
           </div>
         </div>
       </div>
     </header>
   );
-};
-
-// Make sure this is the only export and it's a default export
-export default Header;
+}

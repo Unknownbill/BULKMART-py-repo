@@ -8,7 +8,7 @@ const Groups: React.FC = () => {
   const [selectedState, setSelectedState] = useState('all');
   const [filteredGroups, setFilteredGroups] = useState<MarketGroup[]>(marketGroups);
 
-  const states = ['all', ...Array.from(new Set(marketGroups.map(group => group.location)))];
+  const states = ['all', ...Array.from(new Set(marketGroups.map(group => group.location || '')))].filter(s => s !== '');
 
   const filterGroups = () => {
     let filtered = marketGroups;
@@ -18,10 +18,11 @@ const Groups: React.FC = () => {
     }
 
     if (searchTerm) {
+      const q = searchTerm.toLowerCase();
       filtered = filtered.filter(group =>
-        group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.specialty.toLowerCase().includes(searchTerm.toLowerCase())
+        group.name?.toLowerCase().includes(q) ||
+        (group.location || '').toLowerCase().includes(q) ||
+        (group.specialty || '').toLowerCase().includes(q)
       );
     }
 

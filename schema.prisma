@@ -1,0 +1,81 @@
+// src/prisma/schema.prisma
+
+enum UserRole {
+  FARMER // Supplier/Farmer journey [cite: 675]
+  SUPPLIER
+  BUYER
+  ADMIN // Admin Panel 
+}
+
+enum KycStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id             String        @id @default(uuid())
+  email          String        @unique
+  role           UserRole      // Multi-tier user registration 
+  kycStatus      KycStatus     @default(PENDING)
+  businessName   String?       // Business registration verification [cite: 665]
+  location       String?       // Location-based supplier/buyer matching 
+  documentUrl    String?       // File storage for KYC documents 
+  
+  listings       Product[]
+  groups         GroupMember[]
+  transactions   Transaction[]
+  ratingsGiven   Review[]
+}
+
+model Product {
+  id              String      @id @default(uuid())
+  name            String
+  category        String      // Product catalog with categories 
+  supplierId      String
+  supplier        User        @relation(fields: [supplierId], references: [id])
+  regularPrice    Float
+  bulkPrice       Float       // Bulk pricing structures 
+  minQuantity     Int         // Quantity-based pricing 
+  isFeatured      Boolean     @default(false) // Featured product promotions [cite: 665]
+  
+  // Group Trading fields (as seen in the PDF designs)
+  groupTarget     Int?
+  groupProgress   Int?
+}
+
+model Group {
+  id              String        @id @default(uuid())
+  name            String
+  organizerId     String        // Supplier-led group creation 
+  organizer       User          @relation(fields: [organizerId], references: [id])
+  isPrivate       Boolean       @default(false)
+  requiresApproval Boolean      // Group membership requests and approvals 
+  members         GroupMember[]
+  messages        GroupMessage[] // Group chat functionality 
+}
+
+model Transaction {
+  id              String         @id @default(uuid())
+  buyerId         String
+  sellerId        String
+  productIds      String[]       // List of product IDs in the transaction
+  amount          Float
+  status          String         // e.g., 'PENDING_ESCROW', 'GOODS_RECEIVED', 'COMPLETED'
+  escrowRef       String         // Integrated escrow payment system 
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  // Add foreign keys and relations for buyer/seller
+}
+
+model Review { // Review and rating system [cite: 665]
+  id              String @id @default(uuid())
+  rating          Int    // 1-5
+  comment         String?
+  revieweeId      String // The user being reviewed (supplier/buyer)
+  reviewerId      String // The user giving the review
+  // Add relations
+}
+
+// Add models for CartItem, GroupMember, GroupMessage

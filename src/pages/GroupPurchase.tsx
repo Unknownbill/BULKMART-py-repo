@@ -7,12 +7,12 @@ const GroupPurchasePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
   const [purchases, setPurchases] = useState<GroupPurchase[]>(groupPurchases);
 
-  const handleJoinPurchase = (purchaseId: number) => {
+  const handleJoinPurchase = (purchaseId: string | number) => {
     // In a real app, this would make an API call
     setPurchases(prev => prev.map(purchase => 
-      purchase.id === purchaseId 
-        ? { ...purchase, currentMembers: purchase.currentMembers + 1 }
-        : purchase
+        purchase.id === purchaseId 
+          ? { ...purchase, currentMembers: (purchase.currentMembers ?? 0) + 1 }
+          : purchase
     ));
     console.log('Joined purchase:', purchaseId);
   };
@@ -21,7 +21,7 @@ const GroupPurchasePage: React.FC = () => {
   const completedPurchases = purchases.slice(0, 2).map(purchase => ({
     ...purchase,
     status: 'completed',
-    currentMembers: purchase.membersNeeded
+    currentMembers: purchase.membersNeeded ?? purchase.currentMembers ?? 0
   }));
 
   const currentPurchases = activeTab === 'active' ? activePurchases : completedPurchases;
@@ -106,12 +106,12 @@ const GroupPurchasePage: React.FC = () => {
                 <div className="mb-4">
                   <div className="flex justify-between text-sm text-gray-600 mb-1">
                     <span>Members: {purchase.currentMembers}/{purchase.membersNeeded}</span>
-                    <span>{Math.round((purchase.currentMembers / purchase.membersNeeded) * 100)}%</span>
+                    <span>{Math.round(((purchase.currentMembers ?? 0) / (purchase.membersNeeded ?? 1)) * 100)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 shadow-inner">
                     <div 
                       className="bg-green-600 h-2 rounded-full progress-bar" 
-                      style={{ width: `${(purchase.currentMembers / purchase.membersNeeded) * 100}%` }}
+                      style={{ width: `${((purchase.currentMembers ?? 0) / (purchase.membersNeeded ?? 1)) * 100}%` }}
                     ></div>
                   </div>
                 </div>
